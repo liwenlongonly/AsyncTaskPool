@@ -1,5 +1,5 @@
-#ifndef __CCSYNC_TASK_POOL_H_
-#define __CCSYNC_TASK_POOL_H_
+#ifndef __SYNC_TASK_POOL_H_
+#define __SYNC_TASK_POOL_H_
 
 #include <vector>
 #include <queue>

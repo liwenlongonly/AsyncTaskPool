@@ -1,6 +1,5 @@
 //
 //  VHTimer.cpp
-//  VhallSignaling
 //
 //  Created by ilong on 2017/12/19.
 //  Copyright © 2017年 ilong. All rights reserved.
