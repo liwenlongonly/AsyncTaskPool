@@ -12,28 +12,29 @@
 #include <thread>
 #include <string>
 #include <chrono>
+#include <ctime> //std::localtime
+#include <iomanip> //std::put_time
+#include <sstream> //std::stringstream
 
 uint64_t GetTimestampMs() {
    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
    return ms.count();
 }
 
-const std::string getCurrentSystemTime()
+const std::string getCurrentSystemDate()
 {
    auto tt = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-   struct tm* ptm = localtime(&tt);
-   char date[60] = {0};
-   sprintf(date, "%d-%02d-%02d      %02d:%02d:%02d",
-           (int)ptm->tm_year + 1900,(int)ptm->tm_mon + 1,(int)ptm->tm_mday,
-           (int)ptm->tm_hour,(int)ptm->tm_min,(int)ptm->tm_sec);
-   return std::string(date);
+   std::stringstream ss;
+   ss<<std::put_time(std::localtime(&tt), "%Y-%m-%d %H.%M.%S");
+   return ss.str();
 }
 
 void funcTest(int value){
    printf("funcTest value:%d \n",value);
    std::chrono::milliseconds dura(2000);
    std::this_thread::sleep_for(dura);
-   printf("Current ts: %lld \n",GetTimestampMs());
+   printf("current ts: %lld \n",GetTimestampMs());
+   printf("current date: %s \n",getCurrentSystemDate().c_str());
    printf("funcTest sleep finish.\n");
 }
 
