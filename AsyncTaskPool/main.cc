@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include "VHAsyncTaskPool.h"
 #include "AsyncTaskPoolTest.hpp"
+#include "VHTimer.h"
+#include <iostream>
 #include <thread>
 #include <string>
 #include <chrono>
@@ -38,6 +40,10 @@ void funcTest(int value){
    printf("funcTest sleep finish.\n");
 }
 
+void EchoFunc(std::string&& s){
+   std::cout << "test : " << s << std::endl;
+}
+
 int main(int argc, const char * argv[]) {
    
    auto value = 10;
@@ -59,6 +65,9 @@ int main(int argc, const char * argv[]) {
    });
    
    AsyncTaskPool::getInstance()->stopTasks(AsyncTaskPool::TaskType::TASK_NETWORK);
+   
+   VHTimer timer;
+   timer.SyncWait(1000, EchoFunc, "hello world!");
    
    return 0;
 }
