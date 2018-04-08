@@ -23,16 +23,18 @@ endif()
 # Specifies a path to native header files.
 include_directories(${PROJECT_SOURCE_DIR})
 
-file(GLOB native_srcs "/*.h" "/*.cpp" )
+file(GLOB native_srcs "*.h" "*.cpp" )
+
+message(STATUS "native_srcs: ${native_srcs}")
 
 #config source group
 source_group(asynctaskpool FILES ${native_srcs} )
 
 add_library( # Sets the name of the library.
-             asynctaskpool
+             async_task_pool
 
              # Sets the library as a shared library.
-             static
+             STATIC
 
              # Provides a relative path to your source file(s).
              ${native_srcs} )
