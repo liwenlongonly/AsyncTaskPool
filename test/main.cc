@@ -7,9 +7,9 @@
 //
 
 #include <stdio.h>
-#include "AsyncTaskPool.h"
-#include "AsyncTaskPoolTest.hpp"
-#include "Timer.h"
+#include "async_task_pool.h"
+#include "async_task_pool_test.h"
+#include "timer.h"
 #include <iostream>
 #include <thread>
 #include <string>
@@ -46,27 +46,6 @@ void EchoFunc(std::string&& s){
 
 int main(int argc, const char * argv[]) {
    
-   //AsyncTaskPool test
-   auto value = 10;
-   //Lambda
-   AsyncTaskPool::getInstance()->enqueue(AsyncTaskPool::TaskType::TASK_NETWORK,[value]()->void{
-      printf("Lambda value:%d\n",value);
-   });
-   
-   // func
-   AsyncTaskPool::getInstance()->enqueue(AsyncTaskPool::TaskType::TASK_NETWORK,std::bind(funcTest, value));
-   
-   //class func
-   AsyncTaskPoolTest test;
-   AsyncTaskPool::getInstance()->enqueue(AsyncTaskPool::TaskType::TASK_NETWORK,std::bind(&AsyncTaskPoolTest::Func,&test,value));
-   
-   AsyncTaskPool *thread = new AsyncTaskPool();
-   thread->enqueue(AsyncTaskPool::TaskType::TASK_NETWORK, [value]()->void{
-      printf("thread Lambda value:%d\n",value);
-   });
-   
-   AsyncTaskPool::getInstance()->stopTasks(AsyncTaskPool::TaskType::TASK_NETWORK);
-   
    // timer test
    Timer t;
    //周期性执行定时任务
@@ -90,6 +69,27 @@ int main(int argc, const char * argv[]) {
    t.AsyncWait(1000, std::bind(EchoFunc,  "hello c++11!"));
    
    std::this_thread::sleep_for(std::chrono::seconds(2));
+   
+   //AsyncTaskPool test
+   auto value = 10;
+   //Lambda
+   AsyncTaskPool::getInstance()->enqueue(AsyncTaskPool::TaskType::TASK_NETWORK,[value]()->void{
+      printf("Lambda value:%d\n",value);
+   });
+   
+   // func
+   AsyncTaskPool::getInstance()->enqueue(AsyncTaskPool::TaskType::TASK_NETWORK,std::bind(funcTest, value));
+   
+   //class func
+   AsyncTaskPoolTest test;
+   AsyncTaskPool::getInstance()->enqueue(AsyncTaskPool::TaskType::TASK_NETWORK,std::bind(&AsyncTaskPoolTest::Func,&test,value));
+   
+   AsyncTaskPool *thread = new AsyncTaskPool();
+   thread->enqueue(AsyncTaskPool::TaskType::TASK_NETWORK, [value]()->void{
+      printf("thread Lambda value:%d\n",value);
+   });
+   
+   AsyncTaskPool::getInstance()->stopTasks(AsyncTaskPool::TaskType::TASK_NETWORK);
    
    return 0;
 }

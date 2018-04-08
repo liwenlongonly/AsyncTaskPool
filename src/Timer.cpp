@@ -5,7 +5,7 @@
 //  Copyright © 2017年 ilong. All rights reserved.
 //
 
-#include "Timer.h"
+#include "timer.h"
 #include<thread>
 #include<chrono>
 #include<memory>
