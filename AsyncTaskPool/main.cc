@@ -7,9 +7,9 @@
 //
 
 #include <stdio.h>
-#include "VHAsyncTaskPool.h"
+#include "AsyncTaskPool.h"
 #include "AsyncTaskPoolTest.hpp"
-#include "VHTimer.h"
+#include "Timer.h"
 #include <iostream>
 #include <thread>
 #include <string>
@@ -46,6 +46,7 @@ void EchoFunc(std::string&& s){
 
 int main(int argc, const char * argv[]) {
    
+   //AsyncTaskPool test
    auto value = 10;
    //Lambda
    AsyncTaskPool::getInstance()->enqueue(AsyncTaskPool::TaskType::TASK_NETWORK,[value]()->void{
@@ -66,8 +67,29 @@ int main(int argc, const char * argv[]) {
    
    AsyncTaskPool::getInstance()->stopTasks(AsyncTaskPool::TaskType::TASK_NETWORK);
    
-   VHTimer timer;
-   timer.SyncWait(1000, EchoFunc, "hello world!");
+   // timer test
+   Timer t;
+   //周期性执行定时任务
+   t.StartTimer(1000, std::bind(EchoFunc,"hello world!"));
+   std::this_thread::sleep_for(std::chrono::seconds(4));
+   std::cout << "try to expire timer!" << std::endl;
+   t.Expire();
+   
+   //周期性执行定时任务
+   t.StartTimer(1000, std::bind(EchoFunc,  "hello c++11!"));
+   std::this_thread::sleep_for(std::chrono::seconds(4));
+   std::cout << "try to expire timer!" << std::endl;
+   t.Expire();
+   
+   std::this_thread::sleep_for(std::chrono::seconds(2));
+   
+   //只执行一次定时任务
+   //同步
+   t.SyncWait(1000, std::bind(EchoFunc,  "hello c++11!"));
+   //异步
+   t.AsyncWait(1000, std::bind(EchoFunc,  "hello c++11!"));
+   
+   std::this_thread::sleep_for(std::chrono::seconds(2));
    
    return 0;
 }

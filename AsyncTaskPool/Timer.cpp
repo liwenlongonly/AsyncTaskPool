@@ -5,21 +5,21 @@
 //  Copyright © 2017年 ilong. All rights reserved.
 //
 
-#include "VHTimer.h"
+#include "Timer.h"
 #include<thread>
 #include<chrono>
 #include<memory>
 
-VHTimer::VHTimer():
+Timer::Timer():
 mExpired(true){
    
 }
 
-VHTimer::~VHTimer(){
+Timer::~Timer(){
    Expire();
 }
 
-void VHTimer::StartTimer(int interval, std::function<void()> task){
+void Timer::StartTimer(int interval, std::function<void()> task){
    if (mExpired == false){
       return;
    }
@@ -35,7 +35,7 @@ void VHTimer::StartTimer(int interval, std::function<void()> task){
    }).detach();
 }
 
-void VHTimer::Expire(){
+void Timer::Expire(){
    if (mExpired) {
       return;
    }
@@ -43,11 +43,8 @@ void VHTimer::Expire(){
    mExpiredCond.notify_one();
 }
 
-template<typename callable, class... arguments>
-void VHTimer::SyncWait(int after, callable&& f, arguments&&... args){
+void Timer::SyncWait(int after, std::function<void()> task){
    mExpired = false;
-   std::function<typename std::result_of<callable(arguments...)>::type()> task
-   (std::bind(std::forward<callable>(f), std::forward<arguments>(args)...));
    std::unique_lock<std::mutex> lck(mMutex);
    std::cv_status ret = mExpiredCond.wait_for(lck, std::chrono::milliseconds(after));
    if (ret == std::cv_status::timeout) {
@@ -55,11 +52,8 @@ void VHTimer::SyncWait(int after, callable&& f, arguments&&... args){
    }
 }
 
-template<typename callable, class... arguments>
-void VHTimer::AsyncWait(int after, callable&& f, arguments&&... args){
+void Timer::AsyncWait(int after, std::function<void()> task){
    mExpired = false;
-   std::function<typename std::result_of<callable(arguments...)>::type()> task
-   (std::bind(std::forward<callable>(f), std::forward<arguments>(args)...));
    std::thread([this,after, task](){
       std::unique_lock<std::mutex> lck(mMutex);
       std::cv_status ret = mExpiredCond.wait_for(lck, std::chrono::milliseconds(after));

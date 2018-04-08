@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B75122DC2044099B008B71AC /* VHTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B75122DA2044099A008B71AC /* VHTimer.cpp */; };
+		B779B6502079FB6000B04663 /* AsyncTaskPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B779B64F2079FB6000B04663 /* AsyncTaskPool.cpp */; };
+		B779B6532079FC1700B04663 /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B779B6512079FC1700B04663 /* Timer.cpp */; };
 		B7873A13202AD63400E1FC8E /* main.cc in Sources */ = {isa = PBXBuildFile; fileRef = B7873A12202AD63400E1FC8E /* main.cc */; };
-		B7873A1B202AD67800E1FC8E /* VHAsyncTaskPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7873A19202AD67700E1FC8E /* VHAsyncTaskPool.cpp */; };
 		B7873A1E202AD74300E1FC8E /* AsyncTaskPoolTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7873A1C202AD74300E1FC8E /* AsyncTaskPoolTest.cpp */; };
 /* End PBXBuildFile section */
 
@@ -26,12 +26,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		B75122DA2044099A008B71AC /* VHTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VHTimer.cpp; sourceTree = "<group>"; };
-		B75122DB2044099B008B71AC /* VHTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHTimer.h; sourceTree = "<group>"; };
+		B779B64E2079FB6000B04663 /* AsyncTaskPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncTaskPool.h; sourceTree = "<group>"; };
+		B779B64F2079FB6000B04663 /* AsyncTaskPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AsyncTaskPool.cpp; sourceTree = "<group>"; };
+		B779B6512079FC1700B04663 /* Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timer.cpp; sourceTree = "<group>"; };
+		B779B6522079FC1700B04663 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		B7873A0F202AD63400E1FC8E /* AsyncTaskPool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AsyncTaskPool; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7873A12202AD63400E1FC8E /* main.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cc; sourceTree = "<group>"; };
-		B7873A19202AD67700E1FC8E /* VHAsyncTaskPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VHAsyncTaskPool.cpp; sourceTree = "<group>"; };
-		B7873A1A202AD67700E1FC8E /* VHAsyncTaskPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHAsyncTaskPool.h; sourceTree = "<group>"; };
 		B7873A1C202AD74300E1FC8E /* AsyncTaskPoolTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AsyncTaskPoolTest.cpp; sourceTree = "<group>"; };
 		B7873A1D202AD74300E1FC8E /* AsyncTaskPoolTest.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AsyncTaskPoolTest.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -66,10 +66,10 @@
 		B7873A11202AD63400E1FC8E /* AsyncTaskPool */ = {
 			isa = PBXGroup;
 			children = (
-				B75122DA2044099A008B71AC /* VHTimer.cpp */,
-				B75122DB2044099B008B71AC /* VHTimer.h */,
-				B7873A19202AD67700E1FC8E /* VHAsyncTaskPool.cpp */,
-				B7873A1A202AD67700E1FC8E /* VHAsyncTaskPool.h */,
+				B779B6512079FC1700B04663 /* Timer.cpp */,
+				B779B6522079FC1700B04663 /* Timer.h */,
+				B779B64F2079FB6000B04663 /* AsyncTaskPool.cpp */,
+				B779B64E2079FB6000B04663 /* AsyncTaskPool.h */,
 				B7873A12202AD63400E1FC8E /* main.cc */,
 				B7873A1C202AD74300E1FC8E /* AsyncTaskPoolTest.cpp */,
 				B7873A1D202AD74300E1FC8E /* AsyncTaskPoolTest.hpp */,
@@ -134,9 +134,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				B7873A13202AD63400E1FC8E /* main.cc in Sources */,
+				B779B6502079FB6000B04663 /* AsyncTaskPool.cpp in Sources */,
 				B7873A1E202AD74300E1FC8E /* AsyncTaskPoolTest.cpp in Sources */,
-				B7873A1B202AD67800E1FC8E /* VHAsyncTaskPool.cpp in Sources */,
-				B75122DC2044099B008B71AC /* VHTimer.cpp in Sources */,
+				B779B6532079FC1700B04663 /* Timer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
