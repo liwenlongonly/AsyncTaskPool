@@ -171,6 +171,7 @@ protected:
     ThreadTasks _threadTasks[int(TaskType::TASK_MAX_TYPE)];
     
     static AsyncTaskPool* s_asyncTaskPool;
+    static std::mutex _instanceMutex;
 };
 
 inline void AsyncTaskPool::stopTasks(TaskType type)
