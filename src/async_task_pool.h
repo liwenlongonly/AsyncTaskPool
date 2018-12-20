@@ -10,6 +10,7 @@
 #include <future>
 #include <functional>
 #include <stdexcept>
+#include <unordered_map>
 
 /**
  * @class AsyncTaskPool
@@ -46,7 +47,7 @@ public:
     void stopTasks(TaskType type);
    
     void clearTasks(TaskType type);
-    
+   
     /**
      * Enqueue a asynchronous task.
      *
@@ -107,6 +108,7 @@ protected:
        
         ~ThreadTasks()
         {
+           clear();
            stop();
         }
        
@@ -126,11 +128,6 @@ protected:
                  return;
               }
               _stop = true;
-              
-              while(_tasks.size())
-                 _tasks.pop();
-              while (_taskCallBacks.size())
-                 _taskCallBacks.pop();
            }
            _condition.notify_all();
            _thread.join();
@@ -157,7 +154,7 @@ protected:
             _condition.notify_one();
         }
     private:
-        
+       
         // need to keep track of thread so we can join them
         std::thread _thread;
         // the task queue
@@ -169,29 +166,46 @@ protected:
         std::condition_variable _condition;
         bool _stop;
     };
-    
+   
+    std::shared_ptr<ThreadTasks> getTask(TaskType type);
+   
     //tasks
-    ThreadTasks _threadTasks[int(TaskType::TASK_MAX_TYPE)];
+    std::unordered_map<int, std::shared_ptr<ThreadTasks>> _threadTasks;
     
     static AsyncTaskPool* s_asyncTaskPool;
     static std::mutex _instanceMutex;
 };
 
+inline std::shared_ptr<AsyncTaskPool::ThreadTasks> AsyncTaskPool::getTask(TaskType type){
+   std::shared_ptr<ThreadTasks> threadTask;
+   if(_threadTasks.find((int)type) != _threadTasks.end()){
+      threadTask = _threadTasks[(int)type];
+   }else{
+      threadTask = std::make_shared<ThreadTasks>();
+      _threadTasks[(int)type] = threadTask;
+   }
+   return threadTask;
+}
+
 inline void AsyncTaskPool::stopTasks(TaskType type)
 {
-    auto& threadTask = _threadTasks[(int)type];
-    threadTask.stop();
+   auto threadTask = getTask(type);
+   threadTask->stop();
+   auto iter = _threadTasks.find((int)type);
+   if (iter!=_threadTasks.end()) {
+      _threadTasks.erase(iter);
+   }
 }
 
 inline void AsyncTaskPool::clearTasks(TaskType type){
-   auto& threadTask = _threadTasks[(int)type];
-   threadTask.clear();
+   auto threadTask = getTask(type);
+   threadTask->clear();
 }
 
 inline void AsyncTaskPool::enqueue(AsyncTaskPool::TaskType type, TaskCallBack callback, void* callbackParam, std::function<void()> task)
 {
-    auto& threadTask = _threadTasks[(int)type];
-    threadTask.enqueue(std::move(callback), callbackParam, std::move(task));
+    auto threadTask = getTask(type);
+    threadTask->enqueue(std::move(callback), callbackParam, std::move(task));
 }
 
 inline void AsyncTaskPool::enqueue(AsyncTaskPool::TaskType type, std::function<void()> task)

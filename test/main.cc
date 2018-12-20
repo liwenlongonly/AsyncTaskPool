@@ -83,10 +83,13 @@ int main(int argc, const char * argv[]) {
    //class func
    AsyncTaskPoolTest test;
    AsyncTaskPool::getInstance()->enqueue(AsyncTaskPool::TaskType::TASK_NETWORK,std::bind(&AsyncTaskPoolTest::Func,&test,value));
-   AsyncTaskPool::getInstance()->stopTasks(AsyncTaskPool::TaskType::TASK_NETWORK);
-   AsyncTaskPool *thread = new AsyncTaskPool();
-   thread->enqueue(AsyncTaskPool::TaskType::TASK_NETWORK, [value]()->void{
-      printf("thread Lambda value:%d\n",value);
+   
+   //AsyncTaskPool::getInstance()->stopTasks(AsyncTaskPool::TaskType::TASK_NETWORK);
+   
+   //Lambda
+   value = 22;
+   AsyncTaskPool::getInstance()->enqueue(AsyncTaskPool::TaskType::TASK_NETWORK,[value]()->void{
+      printf("Lambda new value:%d\n",value);
    });
    
    AsyncTaskPool::getInstance()->stopTasks(AsyncTaskPool::TaskType::TASK_NETWORK);
