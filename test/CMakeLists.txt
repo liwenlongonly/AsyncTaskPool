@@ -22,7 +22,7 @@ else()
     message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support.Please use a different C++ compiler.")  
 endif() 
 
-add_subdirectory(${PROJECT_SOURCE_DIR}/../src ${PROJECT_SOURCE_DIR}/build )
+add_subdirectory(${PROJECT_SOURCE_DIR}/../ ${PROJECT_SOURCE_DIR}/build )
 
 # Specifies a path to native header files.
 include_directories(${PROJECT_SOURCE_DIR})
