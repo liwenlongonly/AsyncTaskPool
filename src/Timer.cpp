@@ -16,10 +16,10 @@ mExpired(true){
 }
 
 Timer::~Timer(){
-   Expire();
+   expire();
 }
 
-void Timer::StartTimer(int interval, std::function<void()> task){
+void Timer::startTimer(int interval, std::function<void()> task){
    if (mExpired == false){
       return;
    }
@@ -35,7 +35,7 @@ void Timer::StartTimer(int interval, std::function<void()> task){
    }).detach();
 }
 
-void Timer::Expire(){
+void Timer::expire(){
    if (mExpired) {
       return;
    }
@@ -43,7 +43,7 @@ void Timer::Expire(){
    mExpiredCond.notify_one();
 }
 
-void Timer::SyncWait(int after, std::function<void()> task){
+void Timer::syncWait(int after, std::function<void()> task){
    mExpired = false;
    std::unique_lock<std::mutex> lck(mMutex);
    std::cv_status ret = mExpiredCond.wait_for(lck, std::chrono::milliseconds(after));
@@ -52,7 +52,7 @@ void Timer::SyncWait(int after, std::function<void()> task){
    }
 }
 
-void Timer::AsyncWait(int after, std::function<void()> task){
+void Timer::asyncWait(int after, std::function<void()> task){
    mExpired = false;
    std::thread([this,after, task](){
       std::unique_lock<std::mutex> lck(mMutex);

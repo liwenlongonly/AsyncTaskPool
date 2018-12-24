@@ -49,24 +49,24 @@ int main(int argc, const char * argv[]) {
    // timer test
    Timer t;
    //周期性执行定时任务
-   t.StartTimer(1000, std::bind(EchoFunc,"hello world!"));
+   t.startTimer(1000, std::bind(EchoFunc,"hello world!"));
    std::this_thread::sleep_for(std::chrono::seconds(4));
    std::cout << "try to expire timer!" << std::endl;
-   t.Expire();
+   t.expire();
    
    //周期性执行定时任务
-   t.StartTimer(1000, std::bind(EchoFunc,  "hello c++11!"));
+   t.startTimer(1000, std::bind(EchoFunc,  "hello c++11!"));
    std::this_thread::sleep_for(std::chrono::seconds(4));
    std::cout << "try to expire timer!" << std::endl;
-   t.Expire();
+   t.expire();
    
    std::this_thread::sleep_for(std::chrono::seconds(2));
    
    //只执行一次定时任务
    //同步
-   t.SyncWait(1000, std::bind(EchoFunc,  "hello c++11!"));
+   t.syncWait(1000, std::bind(EchoFunc,  "hello c++11!"));
    //异步
-   t.AsyncWait(1000, std::bind(EchoFunc,  "hello c++11!"));
+   t.asyncWait(1000, std::bind(EchoFunc,  "hello c++11!"));
    
    std::this_thread::sleep_for(std::chrono::seconds(2));
    

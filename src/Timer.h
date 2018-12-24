@@ -24,16 +24,16 @@ public:
 
     @param interval 定时器的时间间隔 ms
     */
-   void StartTimer(int interval, std::function<void()> task);
+   void startTimer(int interval, std::function<void()> task);
    
    /**
     结束定时器
     */
-   void Expire();
+   void expire();
    
-   void SyncWait(int after, std::function<void()> task);
+   void syncWait(int after, std::function<void()> task);
   
-   void AsyncWait(int after, std::function<void()> task);
+   void asyncWait(int after, std::function<void()> task);
 private:
    Timer(const Timer& )=delete;//禁用copy方法
    const Timer& operator=( const Timer& )=delete;//禁用赋值方法
