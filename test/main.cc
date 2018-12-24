@@ -71,6 +71,8 @@ int main(int argc, const char * argv[]) {
    std::this_thread::sleep_for(std::chrono::seconds(2));
    
    //AsyncTaskPool test
+   AsyncTaskPool::getInstance()->startTasks(AsyncTaskPool::TaskType::TASK_NETWORK);
+   
    auto value = 10;
    //Lambda
    AsyncTaskPool::getInstance()->enqueue(AsyncTaskPool::TaskType::TASK_NETWORK,[value]()->void{
@@ -84,8 +86,8 @@ int main(int argc, const char * argv[]) {
    AsyncTaskPoolTest test;
    AsyncTaskPool::getInstance()->enqueue(AsyncTaskPool::TaskType::TASK_NETWORK,std::bind(&AsyncTaskPoolTest::Func,&test,value));
    
-   //AsyncTaskPool::getInstance()->stopTasks(AsyncTaskPool::TaskType::TASK_NETWORK);
-   
+   AsyncTaskPool::getInstance()->stopTasks(AsyncTaskPool::TaskType::TASK_NETWORK);
+   AsyncTaskPool::getInstance()->startTasks(AsyncTaskPool::TaskType::TASK_NETWORK);
    //Lambda
    value = 22;
    AsyncTaskPool::getInstance()->enqueue(AsyncTaskPool::TaskType::TASK_NETWORK,[value]()->void{

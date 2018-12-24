@@ -39,6 +39,7 @@ public:
      */
     static void destroyInstance();
    
+    bool startTasks(TaskType type);
     /**
      * Stop tasks.
      *
@@ -180,17 +181,24 @@ inline std::shared_ptr<AsyncTaskPool::ThreadTasks> AsyncTaskPool::getTask(TaskTy
    std::shared_ptr<ThreadTasks> threadTask;
    if(_threadTasks.find((int)type) != _threadTasks.end()){
       threadTask = _threadTasks[(int)type];
-   }else{
-      threadTask = std::make_shared<ThreadTasks>();
-      _threadTasks[(int)type] = threadTask;
    }
    return threadTask;
 }
 
-inline void AsyncTaskPool::stopTasks(TaskType type)
-{
+inline bool AsyncTaskPool::startTasks(TaskType type){
+   if(_threadTasks.find((int)type) == _threadTasks.end()){
+      std::shared_ptr<ThreadTasks> threadTask = std::make_shared<ThreadTasks>();
+      _threadTasks[(int)type] = threadTask;
+      return true;
+   }
+   return false;
+}
+
+inline void AsyncTaskPool::stopTasks(TaskType type){
    auto threadTask = getTask(type);
-   threadTask->stop();
+   if (threadTask) {
+      threadTask->stop();
+   }
    auto iter = _threadTasks.find((int)type);
    if (iter!=_threadTasks.end()) {
       _threadTasks.erase(iter);
@@ -199,17 +207,19 @@ inline void AsyncTaskPool::stopTasks(TaskType type)
 
 inline void AsyncTaskPool::clearTasks(TaskType type){
    auto threadTask = getTask(type);
-   threadTask->clear();
+   if (threadTask) {
+      threadTask->clear();
+   }
 }
 
-inline void AsyncTaskPool::enqueue(AsyncTaskPool::TaskType type, TaskCallBack callback, void* callbackParam, std::function<void()> task)
-{
+inline void AsyncTaskPool::enqueue(AsyncTaskPool::TaskType type, TaskCallBack callback, void* callbackParam, std::function<void()> task){
     auto threadTask = getTask(type);
-    threadTask->enqueue(std::move(callback), callbackParam, std::move(task));
+   if (threadTask) {
+      threadTask->enqueue(std::move(callback), callbackParam, std::move(task));
+   }
 }
 
-inline void AsyncTaskPool::enqueue(AsyncTaskPool::TaskType type, std::function<void()> task)
-{
+inline void AsyncTaskPool::enqueue(AsyncTaskPool::TaskType type, std::function<void()> task){
     enqueue(type, [](void*) {}, nullptr, std::move(task));
 }
 
