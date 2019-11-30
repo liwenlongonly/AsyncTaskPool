@@ -1,5 +1,5 @@
 # AsyncTaskPool
 ## cmake build
 
-this is a simple c++11 thread lib
+this is a simple c++11 thread lib and mem pool
 
